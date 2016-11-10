@@ -17,3 +17,4 @@ Almost about the demo codes for web framework
 + Sea.js 
 + Plot
 + Flat-UI
++ Alloy-UI
