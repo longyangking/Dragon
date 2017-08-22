@@ -1,7 +1,10 @@
-#Javascript Demo
+# Javascript Demo
 Almost about the demo codes for web framework
 
-##Frameworks
+## Features
++ Pure JS codes
+
+## Frameworks
 + JQuery
 + Vue.js
 + Express.js

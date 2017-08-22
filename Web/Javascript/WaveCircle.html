@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<title>Plane Wave</title>
+	</head>
+	<body>
+    		<canvas id='canv' width=1000 height=500></canvas>
+	</body>
+	<style>
+		body{
+			background:#000; 
+			overflow:hidden;
+		}
+	</style>
+	<script>
+		points = new Array();
+		radius = 1;
+		width = 0;
+		height = 0;
+		dx = 0;  Nx = 50;
+		dy = 0;  Ny = 20;
+		particlesize = 8;
+		coef = 0; 
+
+		
+		function Particle(x,y,value){
+			this.x = x;
+			this.y = y;
+			this.value = value;
+		}
+		
+		function Color(maxvalue,minvalue,value){
+			w = (maxvalue-minvalue)/5;
+			return 'rgba('+ Math.round(255*Math.exp(-Math.pow(value-minvalue,2)/Math.pow(w,2)))+','
+				+ Math.round(255*Math.exp(-Math.pow(value-(maxvalue+minvalue)/2,2)/Math.pow(w,2))) +','
+				+ Math.round(255*Math.exp(-Math.pow(value-maxvalue,2)/Math.pow(w,2))) +','
+				+(0.8)+')';		
+		}
+
+		window.onload = function(){
+			canvas = document.getElementById('canv');
+			obj2D = canvas.getContext('2d');
+			width = canvas.width;
+			height = canvas.height;
+			dx = width/Nx;
+			dy = height/Ny;
+			//obj2D.clearRect(0,0,width,height);
+			//obj2D.beginPath();
+			//obj2D.arc(width/2,height/2,20,0,6.28318-coef);
+			//obj2D.fillStyle = Color(1,-1,0);
+			//obj2D.fill();
+			//obj2D.strokeStyle =Color(1,-1,0);
+			//obj2D.stroke();
+			//alert(Color(1,-1,0));
+			ParticleLoop(0);
+			Animate();
+		}
+		
+		function Animate(){
+			obj2D.clearRect(0,0,width,height);
+			ParticleLoop(1);
+			obj2D.beginPath();
+			obj2D.lineWidth = 1;
+			obj2D.rect(0,0,width,height);
+			obj2D.stroke();
+			window.setTimeout(Animate,16);
+		}	
+
+		function ParticleLoop(status){
+			for (var j = 0; j < Ny; j++){
+				for (var i = 0; i < Nx; i++){
+					if (status){
+						particle = points[i + Nx*j];
+						obj2D.beginPath();
+						obj2D.arc(particle.x,particle.y,particlesize,0,6.28318-coef);
+						obj2D.fillStyle = Color(1,-1,Math.cos(particle.value));
+						obj2D.fill();
+						obj2D.strokeStyle = Color(1,-1,Math.cos(particle.value));
+						obj2D.stroke();
+						/////////////////////////////////////
+						delta = 2*Math.PI*0.1/Nx;
+						points[i + Nx*j].value += delta;
+					}else{
+						particles = new Particle(
+							dx*i,dy*j,2*Math.PI*2*i/Nx);
+						points.push(particles);
+
+					}
+				}
+			}
+		}
+		
+			
+	</script>
+</html>

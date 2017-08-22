@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Reflected Plane Wave</title>
+	</head>
+	<body>
+    		<canvas id='canv' width=1000 height=500></canvas>
+	</body>
+	<style>
+		body{
+			background:#000; 
+			overflow:hidden;
+		}
+	</style>
+	<script>
+
+		width = 0;
+		height = 0;
+		hue0 = [[255,0,0],[255,255,0],[0,255,0],[0,255,255],[0,0,255],
+			[0,255,255],[0,255,0],[255,255,0]];
+		hue = [];
+
+		window.onload = function(){
+			canvas = document.getElementById('canv');
+			obj2D = canvas.getContext('2d');
+			width = canvas.width;
+			height = canvas.height;
+			for (var i=0; i<10*hue0.length; i++){
+				hue[i] = hue0[i%hue0.length];
+			}
+			Animate();
+		}
+		
+		function Animate(){		
+			grad = obj2D.createLinearGradient(0,0,width,height); //Control the wave vector
+			for(var i=0;i<hue.length;i++){
+				var color = 'rgb('+hue[i][0]+','+hue[i][1]+','+hue[i][2]+')';
+				grad.addColorStop(i/hue.length,color);
+			}
+			//obj2D.lineWidth = 20;
+			obj2D.fillStyle = grad;
+			//obj2D.clearRect(0,0,width,height);
+			obj2D.fillRect(0,0,width,height);
+			obj2D.fill();
+			temp = hue[hue.length-1];
+			for(var i=hue.length-1; i>0 ;i--){
+				hue[i] = hue[i-1];
+			}
+			hue[0] = temp;
+			window.setTimeout(Animate,100);
+		}	
+
+		
+			
+	</script>
+</html>
